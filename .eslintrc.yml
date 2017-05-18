@@ -4,6 +4,3 @@ env:
   jest: true
 rules:
   no-nested-ternary: 0
-  no-param-reassign:
-  - 2
-  - props: false
