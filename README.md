@@ -1,12 +1,15 @@
+# ObjectID64
+[![npm](https://img.shields.io/npm/v/objectid64.svg?style=flat-square)](https://www.npmjs.com/package/objectid64)
+[![Travis branch](https://img.shields.io/travis/zandaqo/objectid64.svg?style=flat-square)](https://travis-ci.org/zandaqo/objectid64)
+
 Encodes and decodes hex strings of MongoDB's ObjectIDs to and from base64. By default, uses the following character set: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_`. The character set can changed by supplying a string of 64 characters upon importing the library, i.e. `require('objectid64')(base)`.
  
-# Install
+## Install
 ```
-npm i objectid64
+npm i objectid64 -S
 ```
 
-# Examples
-## Basic usage:
+## Usage
 ```
 const ObjectID = require('mongodb').ObjectID;
 const ObjectID64 = require('objectid64')();
@@ -20,7 +23,7 @@ const decoded = ObjectID64.decode(encoded);
 const original = new ObjectID(decoded);
 ```
 
-## Using a custom character set for base:
+### To use custom character set for base:
 ```
 const ObjectID = require('mongodb').ObjectID;
 const ObjectID64 = require('objectid64')('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
@@ -34,7 +37,7 @@ const decoded = ObjectID64.decode(encoded);
 const original = new ObjectID(decoded);
 ```
 
-# Benchmark
+## Benchmark
 ```
 >node benchmark.js
 ObjectID64 x 436,048 ops/sec ±1.08% (85 runs sampled)
@@ -43,3 +46,6 @@ base64-mongo-id x 246,457 ops/sec ±1.48% (88 runs sampled)
 int-encoder x 3,619 ops/sec ±9.23% (87 runs sampled)
 Fastest is ObjectID64
 ```
+
+## License
+MIT © [Maga D. Zandaqo](http://maga.name)

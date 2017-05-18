@@ -1,8 +1,7 @@
 const Benchmark = require('benchmark');
-const suite = new Benchmark.Suite();
-const encoder = require('./index')();
 const base64 = require('base64-mongo-id');
 const intEncoder = require('int-encoder');
+const encoder = require('./index')();
 
 const ids = ['581653766c5dbc10f0aceb55',
   '581653766c5dbc10f0aceb56',
@@ -27,6 +26,7 @@ const ids = ['581653766c5dbc10f0aceb55',
   '581653766c5dbc10f0aceb69',
   '581653766c5dbc10f0aceb6a'];
 
+const suite = new Benchmark.Suite();
 suite.add('ObjectID64', () => {
   const id = ids[Math.floor(Math.random() * ids.length)];
   const encoded = encoder.encode(id);
