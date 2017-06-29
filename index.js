@@ -62,7 +62,7 @@ class ObjectID64 {
   static fillDictionaries(characters = this.base) {
     const hexToBase = {};
     const baseToHex = {};
-    for (let i = 0; i < 4095; i += 1) {
+    for (let i = 0; i < 4096; i += 1) {
       let hex = (i).toString(16);
       if (hex.length !== 3) hex = pad(hex);
       const base64 = characters[Math.floor(i / 64)] + characters[i % 64];
