@@ -10,7 +10,7 @@ describe('ObjectID64', () => {
       expect(defaultEncoder.hexToBase['000']).toBe('AA');
     });
 
-    it('creates an encoder with custom base', () => {
+    it('creates an encoder with a custom base', () => {
       const base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_';
       const encoder = ObjectID64(base);
       expect(encoder.hexToBase).toBeDefined();
@@ -22,6 +22,8 @@ describe('ObjectID64', () => {
   describe('encode', () => {
     it('encodes given hex string into base64', () => {
       expect(defaultEncoder.encode('581653766c5dbc10f0aceb55')).toBe('WBZTdmxdvBDwrOtV');
+      expect(defaultEncoder.encode('581653766c5dbc10f0acefff')).toBe('WBZTdmxdvBDwrO__');
+      expect(defaultEncoder.encode('581653766c5dbc10f0ace000')).toBe('WBZTdmxdvBDwrOAA');
     });
   });
 
@@ -37,6 +39,9 @@ describe('ObjectID64', () => {
         .fillDictionaries('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
       expect(tables.length).toBe(2);
       expect(tables[0]['000']).toBe('aa');
+      expect(tables[1]['aa']).toBe('000');
+      expect(tables[0]['fff']).toBe('__');
+      expect(tables[1]['__']).toBe('fff');
     });
   });
 });
