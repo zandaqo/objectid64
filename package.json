@@ -17,7 +17,8 @@
     "url": "git+https://github.com/zandaqo/objectid64.git"
   },
   "scripts": {
-    "test": "jest index.spec.js --env=node"
+    "test": "jest index.spec.js --env=node",
+    "benchmark": "node benchmark.js"
   },
   "author": "Maga D. Zandaqo <denelxan@gmail.com> (http://maga.name)",
   "license": "MIT",
@@ -26,9 +27,9 @@
   },
   "homepage": "https://github.com/zandaqo/objectid64#readme",
   "devDependencies": {
-    "jest": "^20.0.1",
     "base64-mongo-id": "^2.0.1",
     "benchmark": "^2.1.2",
-    "int-encoder": "^1.1.0"
+    "int-encoder": "^1.1.0",
+    "jest": "^21.2.1"
   }
 }
