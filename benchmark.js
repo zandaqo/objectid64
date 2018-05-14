@@ -34,8 +34,8 @@ suite.add('ObjectID64', () => {
 })
   .add('Buffer', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];
-    const encoded = new Buffer(id, 'hex').toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
-    const decoded = new Buffer(encoded.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('hex');
+    const encoded = Buffer.from(id, 'hex').toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
+    const decoded = Buffer.from(encoded.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('hex');
   })
   .add('base64-mongo-id', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];

@@ -40,10 +40,10 @@ const original = new ObjectID(decoded);
 ## Benchmark
 ```
 >node benchmark.js
-ObjectID64 x 273,622 ops/sec ±2.09% (82 runs sampled)
-Buffer x 256,028 ops/sec ±8.13% (75 runs sampled)
-base64-mongo-id x 234,712 ops/sec ±1.90% (80 runs sampled)
-int-encoder x 4,163 ops/sec ±13.36% (84 runs sampled)
+ObjectID64 x 583,491 ops/sec ±2.19% (82 runs sampled)
+Buffer x 576,406 ops/sec ±9.60% (68 runs sampled)
+base64-mongo-id x 307,019 ops/sec ±9.94% (72 runs sampled)
+int-encoder x 6,813 ops/sec ±9.47% (71 runs sampled)
 Fastest is ObjectID64
 ```
 
