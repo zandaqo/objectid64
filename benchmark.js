@@ -26,6 +26,24 @@ const ids = ['581653766c5dbc10f0aceb55',
   '581653766c5dbc10f0aceb69',
   '581653766c5dbc10f0aceb6a'];
 
+function bigIntTo64(hex) {
+  let n = BigInt(`0x${hex}`);
+  const d = new Array(16);
+  for (let i = 15; i >= 0; i--) {
+    d[i] = encoder.constructor.base[n % 64n];
+    n = n / 64n;
+  }
+  return d.join();
+}
+
+function bigIntToHex(base64) {
+  let n = 0n;
+  for (let i = 0; i < base64.length; i++) {
+    n = 64n * n + BigInt(encoder.constructor.base.indexOf(base64[i]));
+  }
+  return n.toString(16);
+}
+
 const suite = new Benchmark.Suite();
 suite.add('ObjectID64', () => {
   const id = ids[Math.floor(Math.random() * ids.length)];
@@ -41,6 +59,11 @@ suite.add('ObjectID64', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];
     const encoded = base64.toBase64(id);
     const decoded = base64.toHex(encoded);
+  })
+  .add('BigInt', () => {
+    const id = ids[Math.floor(Math.random() * ids.length)];
+    const encoded = bigIntTo64(id);
+    const decoded = bigIntToHex(encoded);
   })
   .add('int-encoder', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];
