@@ -1,6 +1,6 @@
 {
   "name": "objectid64",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "The fastest way to convert MongoDB ObjectIDs into shorter, URL-friendly base64 and vice versa.",
   "main": "index.js",
   "keywords": [
@@ -30,6 +30,6 @@
     "base64-mongo-id": "^2.0.1",
     "benchmark": "^2.1.2",
     "int-encoder": "^1.1.1",
-    "jest": "^24.1.0"
+    "jest": "^25.1.0"
   }
 }

@@ -1,14 +1,4 @@
 /**
- * Pads hex chunks to make them 3 characters long.
- *
- * @param {string} hex hex chunk
- * @returns {string} padded chunk
- */
-function pad(hex) {
-  return hex.length === 2 ? `0${hex}` : hex.length === 1 ? `00${hex}` : hex;
-}
-
-/**
  * Encodes and decodes hex strings of MongoDB's ObjectIDs to and from base64.
  */
 class ObjectID64 {
@@ -63,8 +53,7 @@ class ObjectID64 {
     const hexToBase = {};
     const baseToHex = {};
     for (let i = 0; i < 4096; i += 1) {
-      let hex = (i).toString(16);
-      if (hex.length !== 3) hex = pad(hex);
+      const hex = (i).toString(16).padStart(3, '0');
       const base64 = characters[Math.floor(i / 64)] + characters[i % 64];
       hexToBase[hex] = base64;
       baseToHex[base64] = hex;
@@ -75,18 +64,21 @@ class ObjectID64 {
 
 /**
  * The lookup table for converting hex to base64
- * @type {Object}
+ * @private
+ * @type {Object<string, string>}
  */
 ObjectID64.hexToBase = undefined;
 
 /**
  * The lookup table for converting base64 to hex
- * @type {Object}
+ * @private
+ * @type {Object<string, string>}
  */
 ObjectID64.baseToHex = undefined;
 
 /**
  * The the default set of characters for base64
+ * @private
  * @type {string}
  */
 ObjectID64.base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
