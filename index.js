@@ -8,12 +8,17 @@ class ObjectID64 {
   constructor(base) {
     if (!base) {
       if (!ObjectID64.hexToBase) {
-        [ObjectID64.hexToBase, ObjectID64.baseToHex] = this.constructor.fillDictionaries();
+        [
+          ObjectID64.hexToBase,
+          ObjectID64.baseToHex,
+        ] = this.constructor.fillDictionaries();
       }
       this.hexToBase = ObjectID64.hexToBase;
       this.baseToHex = ObjectID64.baseToHex;
     } else {
-      [this.hexToBase, this.baseToHex] = this.constructor.fillDictionaries(base);
+      [this.hexToBase, this.baseToHex] = this.constructor.fillDictionaries(
+        base
+      );
     }
   }
 
@@ -24,10 +29,17 @@ class ObjectID64 {
    * @returns {string} encoded base64 string
    */
   encode(id) {
-    return this.hexToBase[id.slice(0, 3)] + this.hexToBase[id.slice(3, 6)] +
-      this.hexToBase[id.slice(6, 9)] + this.hexToBase[id.slice(9, 12)] +
-      this.hexToBase[id.slice(12, 15)] + this.hexToBase[id.slice(15, 18)] +
-      this.hexToBase[id.slice(18, 21)] + this.hexToBase[id.slice(21, 24)];
+    const { hexToBase } = this;
+    return (
+      hexToBase[id.slice(0, 3)] +
+      hexToBase[id.slice(3, 6)] +
+      hexToBase[id.slice(6, 9)] +
+      hexToBase[id.slice(9, 12)] +
+      hexToBase[id.slice(12, 15)] +
+      hexToBase[id.slice(15, 18)] +
+      hexToBase[id.slice(18, 21)] +
+      hexToBase[id.slice(21, 24)]
+    );
   }
 
   /**
@@ -37,10 +49,17 @@ class ObjectID64 {
    * @returns {string} decoded hex string
    */
   decode(id) {
-    return this.baseToHex[id.slice(0, 2)] + this.baseToHex[id.slice(2, 4)] +
-      this.baseToHex[id.slice(4, 6)] + this.baseToHex[id.slice(6, 8)] +
-      this.baseToHex[id.slice(8, 10)] + this.baseToHex[id.slice(10, 12)] +
-      this.baseToHex[id.slice(12, 14)] + this.baseToHex[id.slice(14, 16)];
+    const { baseToHex } = this;
+    return (
+      baseToHex[id.slice(0, 2)] +
+      baseToHex[id.slice(2, 4)] +
+      baseToHex[id.slice(4, 6)] +
+      baseToHex[id.slice(6, 8)] +
+      baseToHex[id.slice(8, 10)] +
+      baseToHex[id.slice(10, 12)] +
+      baseToHex[id.slice(12, 14)] +
+      baseToHex[id.slice(14, 16)]
+    );
   }
 
   /**
@@ -53,7 +72,7 @@ class ObjectID64 {
     const hexToBase = {};
     const baseToHex = {};
     for (let i = 0; i < 4096; i += 1) {
-      const hex = (i).toString(16).padStart(3, '0');
+      const hex = i.toString(16).padStart(3, "0");
       const base64 = characters[Math.floor(i / 64)] + characters[i % 64];
       hexToBase[hex] = base64;
       baseToHex[base64] = hex;
@@ -81,6 +100,7 @@ ObjectID64.baseToHex = undefined;
  * @private
  * @type {string}
  */
-ObjectID64.base = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+ObjectID64.base =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-module.exports = base => new ObjectID64(base);
+module.exports = (base) => new ObjectID64(base);

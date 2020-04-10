@@ -1,6 +1,6 @@
 # ObjectID64
 [![npm](https://img.shields.io/npm/v/objectid64.svg?style=flat-square)](https://www.npmjs.com/package/objectid64)
-[![Travis branch](https://img.shields.io/travis/zandaqo/objectid64.svg?style=flat-square)](https://travis-ci.org/zandaqo/objectid64)
+[![Actions Status](https://github.com/zandaqo/objectid64/workflows/Build/badge.svg)](https://github.com/zandaqo/objectid64/actions)
 
 Encodes and decodes hex strings of MongoDB's ObjectIDs to and from base64.
 By default, uses the following character set: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_`.
@@ -8,7 +8,7 @@ The character set can be changed by supplying a string of 64 characters upon imp
  
 ## Install
 ```
-npm i objectid64 -S
+npm i objectid64
 ```
 
 ## Usage
