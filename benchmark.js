@@ -1,9 +1,12 @@
-const Benchmark = require('benchmark');
-const base64 = require('base64-mongo-id');
-const intEncoder = require('int-encoder');
-const encoder = require('./index')();
+import Benchmark from 'benchmark';
+import base64 from 'base64-mongo-id';
+import intEncoder from 'int-encoder';
+import { ObjectID64 } from './index.js';
 
-const ids = ['581653766c5dbc10f0aceb55',
+const encoder = new ObjectID64();
+
+const ids = [
+  '581653766c5dbc10f0aceb55',
   '581653766c5dbc10f0aceb56',
   '581653766c5dbc10f0aceb57',
   '581653766c5dbc10f0aceb58',
@@ -24,13 +27,14 @@ const ids = ['581653766c5dbc10f0aceb55',
   '581653766c5dbc10f0aceb67',
   '581653766c5dbc10f0aceb68',
   '581653766c5dbc10f0aceb69',
-  '581653766c5dbc10f0aceb6a'];
+  '581653766c5dbc10f0aceb6a',
+];
 
 function bigIntTo64(hex) {
   let n = BigInt(`0x${hex}`);
   const d = new Array(16);
   for (let i = 15; i >= 0; i--) {
-    d[i] = encoder.constructor.base[n % 64n];
+    d[i] = encoder.base[n % 64n];
     n = n / 64n;
   }
   return d.join();
@@ -39,21 +43,22 @@ function bigIntTo64(hex) {
 function bigIntToHex(base64) {
   let n = 0n;
   for (let i = 0; i < base64.length; i++) {
-    n = 64n * n + BigInt(encoder.constructor.base.indexOf(base64[i]));
+    n = 64n * n + BigInt(encoder.base.indexOf(base64[i]));
   }
   return n.toString(16);
 }
 
 const suite = new Benchmark.Suite();
-suite.add('ObjectID64', () => {
-  const id = ids[Math.floor(Math.random() * ids.length)];
-  const encoded = encoder.encode(id);
-  const decoded = encoder.decode(encoded);
-})
+suite
+  .add('ObjectID64', () => {
+    const id = ids[Math.floor(Math.random() * ids.length)];
+    const encoded = encoder.encode(id);
+    const decoded = encoder.decode(encoded);
+  })
   .add('Buffer', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];
-    const encoded = Buffer.from(id, 'hex').toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
-    const decoded = Buffer.from(encoded.replace(/-/g, '+').replace(/_/g, '/'), 'base64').toString('hex');
+    const encoded = Buffer.from(id, 'hex').toString('base64url');
+    const decoded = Buffer.from(encoded, 'base64url').toString('hex');
   })
   .add('base64-mongo-id', () => {
     const id = ids[Math.floor(Math.random() * ids.length)];
@@ -74,6 +79,8 @@ suite.add('ObjectID64', () => {
     console.log(String(event.target));
   })
   .on('complete', (event) => {
-    console.log(`Fastest is ${event.currentTarget.filter('fastest').map('name')}`);
+    console.log(
+      `Fastest is ${event.currentTarget.filter('fastest').map('name')}`,
+    );
   })
   .run();
