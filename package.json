@@ -22,8 +22,7 @@
     "url": "git+https://github.com/zandaqo/objectid64.git"
   },
   "scripts": {
-    "build": "tsc",
-    "benchmark": "node benchmark.js"
+    "build": "tsc"
   },
   "author": "Maga D. Zandaqo <denelxan@gmail.com> (http://maga.name)",
   "license": "MIT",
@@ -32,9 +31,6 @@
   },
   "homepage": "https://github.com/zandaqo/objectid64#readme",
   "devDependencies": {
-    "base64-mongo-id": "^2.0.1",
-    "benchmark": "^2.1.2",
-    "int-encoder": "^1.1.1",
-    "typescript": "^4.1.3"
+    "typescript": "^4.2.4"
   }
 }
