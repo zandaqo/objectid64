@@ -1,5 +1,5 @@
 const defaultBase =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
 /**
  * Encodes and decodes hex strings of MongoDB's ObjectIDs to and from base64.
@@ -26,7 +26,7 @@ export class ObjectID64 {
     this.baseToHex = {};
     this.hexToBase = {};
     for (let i = 0; i < 4096; i += 1) {
-      const hex = i.toString(16).padStart(3, '0');
+      const hex = i.toString(16).padStart(3, "0");
       const base64 = base[Math.floor(i / 64)] + base[i % 64];
       this.hexToBase[hex] = base64;
       this.baseToHex[base64] = hex;

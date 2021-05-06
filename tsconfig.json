@@ -15,5 +15,5 @@
     "lib": ["es2020"]
   },
   "include": ["*.ts"],
-  "exclude": ["*.spec.ts"]
+  "exclude": ["*.test.ts"]
 }
