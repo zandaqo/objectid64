@@ -1,0 +1,13 @@
+name: Test
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: denoland/setup-deno@main
+        with:
+          deno-version: canary
+      - name: Test
+        run: deno test index.test.ts
