@@ -14,32 +14,34 @@ npm i objectid64
 ```
 
 ```javascript
-import { ObjectID } from 'objectid64';
+import { ObjectID64 } from 'objectid64';
 ```
 
 With Deno:
 ```javascript
-import { ObjectID } from "https://raw.githubusercontent.com/zandaqo/objectid64/2.0.0/index.ts"
+import { ObjectID64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/2.0.0/index.ts"
 ```
 
 
 ```javascript
+const encoder = new ObjectID64();
 const id = new ObjectID();
 // 581653766c5dbc10f0aceb55
-const encoded = ObjectID64.encode(id.toString());
+const encoded = encoder.encode(id.toHexString());
 // 'WBZTdmxdvBDwrOtV'
-const decoded = ObjectID64.decode(encoded);
+const decoded = encoder.decode(encoded);
 // '581653766c5dbc10f0aceb55'
 const original = new ObjectID(decoded);
 ```
 
 ### With a custom character set:
 ```javascript
-const id = new ObjectID('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
+const encoder = new ObjectID64('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_');
+const id = new ObjectID();
 // 581653766c5dbc10f0aceb55
-const encoded = ObjectID64.encode(id.toString());
+const encoded = encoder.encode(id.toHexString());
 // 'wbztDMXDVbdWRoTv'
-const decoded = ObjectID64.decode(encoded);
+const decoded = encoder.decode(encoded);
 // '581653766c5dbc10f0aceb55'
 const original = new ObjectID(decoded);
 ```
