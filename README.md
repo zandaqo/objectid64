@@ -1,6 +1,6 @@
 # ObjectID64
 [![npm](https://img.shields.io/npm/v/objectid64.svg?style=flat-square)](https://www.npmjs.com/package/objectid64)
-[![Actions Status](https://github.com/zandaqo/objectid64/workflows/test/badge.svg)](https://github.com/zandaqo/objectid64/actions)
+[![Actions Status](https://github.com/zandaqo/objectid64/actions/workflows/test.yml/badge.svg)](https://github.com/zandaqo/objectid64/actions)
 
 Encodes and decodes hex strings of MongoDB's ObjectIDs to and from base64.
 By default, uses the following url-friendly character set: `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_`.
@@ -19,7 +19,7 @@ import { ObjectID } from 'objectid64';
 
 With Deno:
 ```javascript
-import { ObjectID } from "https://raw.githubusercontent.com/zandaqo/objectid64/2.0/index.ts"
+import { ObjectID } from "https://raw.githubusercontent.com/zandaqo/objectid64/2.0.0/index.ts"
 ```
 
 
