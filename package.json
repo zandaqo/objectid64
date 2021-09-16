@@ -29,8 +29,5 @@
   "bugs": {
     "url": "https://github.com/zandaqo/objectid64/issues"
   },
-  "homepage": "https://github.com/zandaqo/objectid64#readme",
-  "devDependencies": {
-    "typescript": "^4.2.4"
-  }
+  "homepage": "https://github.com/zandaqo/objectid64#readme"
 }

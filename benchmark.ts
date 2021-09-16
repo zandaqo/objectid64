@@ -2,11 +2,7 @@ import {
   bench,
   BenchmarkRunResult,
   runBenchmarks,
-} from "https://deno.land/std@0.95.0/testing/bench.ts";
-import {
-  decode,
-  encode,
-} from "https://deno.land/std@0.95.0/encoding/base64.ts";
+} from "https://deno.land/std@0.107.0/testing/bench.ts";
 import mongoid from "https://jspm.dev/base64-mongo-id";
 import { ObjectID64 } from "./index.ts";
 
@@ -65,7 +61,7 @@ bench({
   func(b): void {
     b.start();
     const encoded = encoder.encode(ids[getIndex(ids.length)]);
-    const decoded = encoder.decode(encoded);
+    const _decoded = encoder.decode(encoded);
     b.stop();
   },
 });
@@ -76,7 +72,7 @@ bench({
   func(b): void {
     b.start();
     const encoded = bigIntTo64(ids[getIndex(ids.length)]);
-    const decoded = bigIntToHex(encoded);
+    const _decoded = bigIntToHex(encoded);
     b.stop();
   },
 });
@@ -89,7 +85,7 @@ bench({
     //@ts-ignore deno-lint
     const encoded = mongoid.toBase64(ids[getIndex(ids.length)]);
     //@ts-ignore deno-lint
-    const decoded = mongoid.toHex(encoded);
+    const _decoded = mongoid.toHex(encoded);
     b.stop();
   },
 });
