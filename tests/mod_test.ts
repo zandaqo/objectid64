@@ -1,5 +1,5 @@
-import { assertEquals } from "https://deno.land/std@0.107.0/testing/asserts.ts";
-import { ObjectID64 } from "./index.ts";
+import { assertEquals } from "https://deno.land/std@0.136.0/testing/asserts.ts";
+import { ObjectID64 } from "../mod.ts";
 
 const defaultEncoder = new ObjectID64();
 

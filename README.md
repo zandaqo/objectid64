@@ -55,11 +55,12 @@ const original = new ObjectID(decoded);
 ## Benchmark
 
 ```
-> deno run --no-check benchmark.ts
+> deno bench --unstable benchmarks/mod_bench.ts
 ...
-1. ObjectID64 (230ms) - 100%
-2. base64-mongo-id (402ms) - 57.21%
-3. BigInt (1058ms) - 21.74%
+summary
+  ObjectID64
+   2.12x times faster than base64-mongo-id
+   6.06x times faster than BigInt
 ```
 
 ## License

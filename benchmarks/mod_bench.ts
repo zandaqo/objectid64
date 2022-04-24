@@ -1,10 +1,5 @@
-import {
-  bench,
-  BenchmarkRunResult,
-  runBenchmarks,
-} from "https://deno.land/std@0.107.0/testing/bench.ts";
 import mongoid from "https://jspm.dev/base64-mongo-id";
-import { ObjectID64 } from "./index.ts";
+import { ObjectID64 } from "../mod.ts";
 
 function getIndex(max: number): number {
   return Math.floor(Math.random() * max);
@@ -55,53 +50,23 @@ function bigIntToHex(base64: string) {
   return n.toString(16);
 }
 
-bench({
-  name: "ObjectID64",
-  runs: 100000,
-  func(b): void {
-    b.start();
+Deno.bench(
+  "ObjectID64",
+  { group: "Encoding and Decoding", baseline: true },
+  () => {
     const encoded = encoder.encode(ids[getIndex(ids.length)]);
     const _decoded = encoder.decode(encoded);
-    b.stop();
   },
+);
+
+Deno.bench("BigInt", { group: "Encoding and Decoding" }, () => {
+  const encoded = bigIntTo64(ids[getIndex(ids.length)]);
+  const _decoded = bigIntToHex(encoded);
 });
 
-bench({
-  name: "BigInt",
-  runs: 100000,
-  func(b): void {
-    b.start();
-    const encoded = bigIntTo64(ids[getIndex(ids.length)]);
-    const _decoded = bigIntToHex(encoded);
-    b.stop();
-  },
-});
-
-bench({
-  name: "base64-mongo-id",
-  runs: 100000,
-  func(b): void {
-    b.start();
-    //@ts-ignore deno-lint
-    const encoded = mongoid.toBase64(ids[getIndex(ids.length)]);
-    //@ts-ignore deno-lint
-    const _decoded = mongoid.toHex(encoded);
-    b.stop();
-  },
-});
-
-runBenchmarks().then((result: BenchmarkRunResult) => {
-  result.results.sort((a, b) => a.totalMs > b.totalMs ? 1 : -1);
-  const fastest = result.results[0];
-  console.log(`1. ${fastest.name} (${fastest.totalMs}ms) - 100%`);
-  for (let i = 1; i < result.results.length; i += 1) {
-    const benchmark = result.results[i];
-    console.log(
-      `${i + 1}. ${benchmark.name} (${benchmark.totalMs}ms) - ${
-        (1 / (benchmark.totalMs / fastest.totalMs) * 100).toFixed(2)
-      }%`,
-    );
-  }
-}).catch((e) => {
-  console.log(e);
+Deno.bench("base64-mongo-id", { group: "Encoding and Decoding" }, () => {
+  //@ts-ignore deno-lint
+  const encoded = mongoid.toBase64(ids[getIndex(ids.length)]);
+  //@ts-ignore deno-lint
+  const _decoded = mongoid.toHex(encoded);
 });
