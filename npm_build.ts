@@ -1,7 +1,7 @@
 import {
   build,
   emptyDir,
-} from "https://raw.githubusercontent.com/denoland/dnt/0.23.0/mod.ts";
+} from "https://raw.githubusercontent.com/denoland/dnt/0.28.0/mod.ts";
 
 await emptyDir("npm");
 
@@ -13,7 +13,7 @@ await build({
   declaration: true,
   scriptModule: false,
   compilerOptions: {
-    target: "Latest",
+    target: "ES2021",
     sourceMap: true,
     inlineSources: true,
   },
@@ -24,11 +24,12 @@ await build({
   package: {
     name: "objectid64",
     version: Deno.args[0],
-    main: "mod.js",
+    main: "./esm/mod.js",
     type: "module",
     description:
-      "The fastest way to convert MongoDB ObjectIDs into shorter, URL-friendly base64 and vice versa.",
+      "The fastest way to convert ids, UUID, MongoDB ObjectId into shorter, URL-friendly base64 and vice versa.",
     keywords: [
+      "uuid",
       "objectid",
       "base64",
       "uri",
