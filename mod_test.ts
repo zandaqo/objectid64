@@ -57,7 +57,7 @@ test("[ObjectID64.constructor] creates encoder with the default base", () => {
   assertEquals(defaultEncoder.hexToBase !== undefined, true);
   assertEquals(defaultEncoder.baseToHex !== undefined, true);
   assertEquals(
-    defaultEncoder.hexToBase["000"],
+    defaultEncoder.hexToBase.get("000"),
     "AA",
   );
 });
@@ -67,7 +67,7 @@ test("[ObjectID64.constructor] creates an encoder with a custom base", () => {
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_",
   );
   assertEquals(
-    encoder.hexToBase["000"],
+    encoder.hexToBase.get("000"),
     "aa",
   );
 });
