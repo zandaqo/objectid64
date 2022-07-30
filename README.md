@@ -32,7 +32,7 @@ import { ObjectId64 } from "objectid64";
 In Deno:
 
 ```javascript
-import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.0.0/mod.ts";
+import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.0.2/mod.ts";
 ```
 
 ```javascript
@@ -81,21 +81,21 @@ decoded = encoder.toUUID(encoded);
 > deno bench --unstable
 benchmark            time (avg)             (min … max)       p75       p99      p995        
 ------------------------------------------------------- -----------------------------        
-ObjectId64         1.63 µs/iter     (1.53 µs … 2.57 µs)   1.62 µs   2.57 µs   2.57 µs        
-BigInt             7.48 µs/iter     (6.4 µs … 480.9 µs)      7 µs   17.2 µs   21.6 µs        
-base64-mongo-id    4.56 µs/iter     (2.6 µs … 675.9 µs)    6.2 µs   10.3 µs   13.7 µs        
+ObjectId64         3.39 µs/iter     (3.21 µs … 4.49 µs)    3.4 µs   4.49 µs   4.49 µs
+BigInt            13.04 µs/iter    (11.1 µs … 514.5 µs)   11.7 µs   31.4 µs   35.7 µs
+base64-mongo-id    6.99 µs/iter     (6.2 µs … 514.6 µs)    6.5 µs   21.4 µs   22.8 µs
 
 summary
   ObjectId64
-   2.8x faster than base64-mongo-id
-   4.6x faster than BigInt
+   2.06x faster than base64-mongo-id
+   3.84x faster than BigInt
 
-ObjectId64         8.05 µs/iter     (5.2 µs … 994.8 µs)    7.4 µs   24.2 µs   27.6 µs        
-uuid-base64       11.64 µs/iter     (9.4 µs … 515.3 µs)   11.2 µs   28.5 µs   30.3 µs        
+ObjectId64         7.79 µs/iter      (4.9 µs … 2.58 ms)    7.2 µs   23.8 µs   27.8 µs
+uuid-base64       11.78 µs/iter        (9 µs … 3.29 ms)     11 µs   27.9 µs   31.9 µs
 
 summary
   ObjectId64
-   1.45x faster than uuid-base64
+   1.51x faster than uuid-base64
 ```
 
 ## License

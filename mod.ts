@@ -132,14 +132,11 @@ export class ObjectId64 {
    * @returns encoded base64 string
    */
   fromInt(integer: number): string {
-    const { base } = this;
-    let n = integer;
-    const d = [];
-    while (n > 0) {
-      d.unshift(base[n % 64]);
-      n = n >> 6;
+    let encoded = "";
+    for (let n = integer; n > 0; n >>= 6) {
+      encoded = this.base[n & 0x3F] + encoded;
     }
-    return d.join("");
+    return encoded;
   }
 
   /**
@@ -164,14 +161,11 @@ export class ObjectId64 {
    * @returns encoded base64 string
    */
   fromBigInt(integer: bigint): string {
-    const { base } = this;
-    let n = integer;
-    const d = [];
-    while (n > 0n) {
-      d.unshift(base[Number(n % 64n)]);
-      n = n >> 6n;
+    let encoded = "";
+    for (let n = integer; n > 0n; n >>= 6n) {
+      encoded = this.base[Number(n & 0x3Fn)] + encoded;
     }
-    return d.join("");
+    return encoded;
   }
 
   /**
