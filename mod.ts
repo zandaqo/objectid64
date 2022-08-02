@@ -10,27 +10,42 @@ export class ObjectId64 {
    * The the default set of characters for base64
    */
   base: string;
+
   /**
    * The lookup table for converting base64 to hex
    */
-  baseToHex: Map<string, string>;
+  baseToHex = new Map<string, string>();
+
   /**
    * The lookup table for converting hex to base64
    */
-  hexToBase: Map<string, string>;
+  hexToBase = new Map<string, string>();
+
+  static initialize(
+    base: string,
+    baseToHex: Map<string, string>,
+    hexToBase: Map<string, string>,
+  ): void {
+    for (let i = 0; i < 4096; i += 1) {
+      const hex = i.toString(16).padStart(3, "0");
+      const base64 = base[i >> 6] + base[i & 63];
+      hexToBase.set(hex, base64);
+      baseToHex.set(base64, hex);
+    }
+  }
 
   /**
    * @param base the set of characters to be used as a base for conversions
+   * @param noLookup whether to skip creation of the lookup table for hex encoding
    */
-  constructor(base: string = defaultBase) {
+  constructor(base: string = defaultBase, noLookup?: boolean) {
     this.base = base;
-    this.baseToHex = new Map<string, string>();
-    this.hexToBase = new Map<string, string>();
-    for (let i = 0; i < 4096; i += 1) {
-      const hex = i.toString(16).padStart(3, "0");
-      const base64 = base[i >> 6] + base[i % 64];
-      this.hexToBase.set(hex, base64);
-      this.baseToHex.set(base64, hex);
+    if (!noLookup) {
+      (this.constructor as typeof ObjectId64).initialize(
+        this.base,
+        this.baseToHex,
+        this.hexToBase,
+      );
     }
   }
 
@@ -134,7 +149,7 @@ export class ObjectId64 {
   fromInt(integer: number): string {
     let encoded = "";
     for (let n = integer; n > 0; n >>= 6) {
-      encoded = this.base[n & 0x3F] + encoded;
+      encoded = this.base[n & 63] + encoded;
     }
     return encoded;
   }
@@ -146,10 +161,9 @@ export class ObjectId64 {
    * @returns decoded number
    */
   toInt(id: string): number {
-    const { base } = this;
     let n = 0;
     for (let i = 0; i < id.length; i++) {
-      n = (n << 6) + base.indexOf(id[i]);
+      n = (n << 6) + this.base.indexOf(id[i]);
     }
     return n;
   }
@@ -163,7 +177,7 @@ export class ObjectId64 {
   fromBigInt(integer: bigint): string {
     let encoded = "";
     for (let n = integer; n > 0n; n >>= 6n) {
-      encoded = this.base[Number(n & 0x3Fn)] + encoded;
+      encoded = this.base[Number(n & 63n)] + encoded;
     }
     return encoded;
   }
@@ -175,10 +189,9 @@ export class ObjectId64 {
    * @returns decoded bigint
    */
   toBigInt(id: string): bigint {
-    const { base } = this;
     let n = 0n;
     for (let i = 0; i < id.length; i++) {
-      n = (n << 6n) + BigInt(base.indexOf(id[i]));
+      n = (n << 6n) + BigInt(this.base.indexOf(id[i]));
     }
     return n;
   }

@@ -3,18 +3,17 @@
 [![Actions Status](https://github.com/zandaqo/objectid64/workflows/ci/badge.svg)](https://github.com/zandaqo/objectid64/actions)
 [![npm](https://img.shields.io/npm/v/objectid64.svg?style=flat-square)](https://www.npmjs.com/package/objectid64)
 
-Encodes UUID, MongoDB's ObjectId, numbers, and bigints to and from base64 with a
+Encodes UUID, MongoDB's ObjectId, numbers, and bigints to and from Base64 with a
 configurable character set. By default the library uses the following
-url-friendly character set:
+url-friendly alphabet:
 `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_`.
 
 Features:
 
+- Configurable alphabet for obfuscating ids.
 - Shorter id strings:
   - UUID from 36 characters to 22
   - ObjectId from 24 to 16
-  - numbers as strings up to 1/4 in character size
-- Configurable character set for masking ids.
 - As fast as JavaScript gets.
 
 ## Usage
@@ -32,7 +31,7 @@ import { ObjectId64 } from "objectid64";
 In Deno:
 
 ```javascript
-import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.0.2/mod.ts";
+import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.0.3/mod.ts";
 ```
 
 ```javascript
@@ -53,7 +52,7 @@ decoded = encoder.toUUID(encoded);
 //=> "6d2bb408-3176-42d3-b473-3d251f19569f"
 ```
 
-### With a custom character set:
+### With a custom alphabet:
 
 ```javascript
 const encoder = new ObjectId64(
@@ -81,21 +80,28 @@ decoded = encoder.toUUID(encoded);
 > deno bench --unstable
 benchmark            time (avg)             (min … max)       p75       p99      p995        
 ------------------------------------------------------- -----------------------------        
-ObjectId64         3.39 µs/iter     (3.21 µs … 4.49 µs)    3.4 µs   4.49 µs   4.49 µs
-BigInt            13.04 µs/iter    (11.1 µs … 514.5 µs)   11.7 µs   31.4 µs   35.7 µs
-base64-mongo-id    6.99 µs/iter     (6.2 µs … 514.6 µs)    6.5 µs   21.4 µs   22.8 µs
+ObjectId64         1.43 µs/iter     (1.35 µs … 2.04 µs)   1.44 µs   2.04 µs   2.04 µs
+BigInt             6.64 µs/iter     (4.7 µs … 15.65 ms)    5.6 µs   20.6 µs   26.3 µs
+base64-mongo-id    3.36 µs/iter      (2.7 µs … 2.51 ms)    2.9 µs    9.8 µs   12.4 µs
 
 summary
   ObjectId64
-   2.06x faster than base64-mongo-id
-   3.84x faster than BigInt
+   2.35x faster than base64-mongo-id
+   4.64x faster than BigInt
 
-ObjectId64         7.79 µs/iter      (4.9 µs … 2.58 ms)    7.2 µs   23.8 µs   27.8 µs
-uuid-base64       11.78 µs/iter        (9 µs … 3.29 ms)     11 µs   27.9 µs   31.9 µs
+ObjectId64         3.45 µs/iter      (2.2 µs … 8.92 ms)    3.1 µs   10.1 µs   11.2 µs
+uuid-base64       11.49 µs/iter      (8.6 µs … 4.05 ms)   10.7 µs   28.3 µs   33.5 µs
 
 summary
   ObjectId64
-   1.51x faster than uuid-base64
+   3.33x faster than uuid-base64
+
+ObjectId64         4.13 µs/iter     (3.79 µs … 5.82 µs)   3.97 µs   5.82 µs   5.82 µs
+nanoid             7.22 µs/iter      (3.8 µs … 6.47 ms)    5.3 µs   36.6 µs   40.5 µs
+
+summary
+  ObjectId64
+   1.75x faster than nanoid
 ```
 
 ## License

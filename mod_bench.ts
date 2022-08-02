@@ -1,6 +1,7 @@
 import mongoid from "https://jspm.dev/base64-mongo-id";
 import { default as base64 } from "https://jspm.dev/uuid-base64";
 import { assertEquals } from "https://deno.land/std@0.136.0/testing/asserts.ts";
+import { nanoid } from "https://jspm.dev/nanoid";
 import { ObjectId64 } from "./mod.ts";
 
 function getIndex(max: number): number {
@@ -78,5 +79,22 @@ bench(
     const encoded = base64.encode(id);
     //@ts-ignore deno-lint
     assertEquals(id, base64.decode(encoded));
+  },
+);
+
+bench(
+  "ObjectId64",
+  { group: "generation", baseline: true },
+  () => {
+    const id = crypto.randomUUID();
+    const _encoded = encoder.fromUUID(id);
+  },
+);
+
+bench(
+  "nanoid",
+  { group: "generation" },
+  () => {
+    const _encoded = nanoid();
   },
 );
