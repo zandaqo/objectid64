@@ -1,60 +1,42 @@
 import mongoid from "https://jspm.dev/base64-mongo-id";
 import { default as base64 } from "https://jspm.dev/uuid-base64";
 import { assertEquals } from "https://deno.land/std@0.136.0/testing/asserts.ts";
-import { nanoid } from "https://jspm.dev/nanoid";
+import { customAlphabet } from "https://jspm.dev/nanoid";
 import { ObjectId64 } from "./mod.ts";
+import { ObjectId } from "https://cdn.skypack.dev/bson?dts";
 
 function getIndex(max: number): number {
   return Math.floor(Math.random() * max);
 }
 const { bench } = Deno;
 const encoder = new ObjectId64();
+const nanoid = customAlphabet(encoder.base, 21);
 
-const objectIds = [
-  "581653766c5dbc10f0aceb55",
-  "581653766c5dbc10f0aceb56",
-  "581653766c5dbc10f0aceb57",
-  "581653766c5dbc10f0aceb58",
-  "581653766c5dbc10f0aceb59",
-  "581653766c5dbc10f0aceb5a",
-  "581653766c5dbc10f0aceb5b",
-  "581653766c5dbc10f0aceb5c",
-  "581653766c5dbc10f0aceb5d",
-  "581653766c5dbc10f0aceb5e",
-  "581653766c5dbc10f0aceb5f",
-  "581653766c5dbc10f0aceb60",
-  "581653766c5dbc10f0aceb61",
-  "581653766c5dbc10f0aceb62",
-  "581653766c5dbc10f0aceb63",
-  "581653766c5dbc10f0aceb64",
-  "581653766c5dbc10f0aceb65",
-  "581653766c5dbc10f0aceb66",
-  "581653766c5dbc10f0aceb67",
-  "581653766c5dbc10f0aceb68",
-  "581653766c5dbc10f0aceb69",
-  "581653766c5dbc10f0aceb6a",
-];
+const objectIds: Array<[ObjectId, string]> = new Array(100).fill(1).map(() => {
+  const id = new ObjectId();
+  return [id, id.toHexString()];
+});
 
 const uuids = new Array(100).fill(1).map(() => crypto.randomUUID());
 
 bench(
   "ObjectId64",
-  { group: "ObjectId", baseline: true },
+  { group: "ObjectId Hex to Base64", baseline: true },
   () => {
-    const id = objectIds[getIndex(objectIds.length)];
+    const id = objectIds[getIndex(objectIds.length)][1];
     const encoded = encoder.fromObjectId(id);
     assertEquals(id, encoder.toObjectId(encoded));
   },
 );
 
-bench("BigInt", { group: "ObjectId" }, () => {
-  const id = objectIds[getIndex(objectIds.length)];
+bench("BigInt", { group: "ObjectId Hex to Base64" }, () => {
+  const id = objectIds[getIndex(objectIds.length)][1];
   const encoded = encoder.fromBigInt(BigInt(`0x${id}`));
   assertEquals(id, encoder.toBigInt(encoded).toString(16));
 });
 
-bench("base64-mongo-id", { group: "ObjectId" }, () => {
-  const id = objectIds[getIndex(objectIds.length)];
+bench("base64-mongo-id", { group: "ObjectId Hex to Base64" }, () => {
+  const id = objectIds[getIndex(objectIds.length)][1];
   //@ts-ignore deno-lint
   const encoded = mongoid.toBase64(id);
   //@ts-ignore deno-lint
@@ -63,7 +45,7 @@ bench("base64-mongo-id", { group: "ObjectId" }, () => {
 
 bench(
   "ObjectId64",
-  { group: "UUID", baseline: true },
+  { group: "UUID Hex to Base64", baseline: true },
   () => {
     const id = uuids[getIndex(uuids.length)];
     const encoded = encoder.fromUUID(id);
@@ -72,7 +54,7 @@ bench(
 );
 bench(
   "uuid-base64",
-  { group: "UUID" },
+  { group: "UUID Hex to Base64" },
   () => {
     const id = uuids[getIndex(uuids.length)];
     //@ts-ignore deno-lint
@@ -84,7 +66,16 @@ bench(
 
 bench(
   "ObjectId64",
-  { group: "generation", baseline: true },
+  { group: "UUID Generate", baseline: true },
+  () => {
+    const id = crypto.getRandomValues(new Uint8Array(16));
+    const _encoded = encoder.fromBinUUID(id);
+  },
+);
+
+bench(
+  "ObjectId64 From Hex",
+  { group: "UUID Generate" },
   () => {
     const id = crypto.randomUUID();
     const _encoded = encoder.fromUUID(id);
@@ -93,7 +84,7 @@ bench(
 
 bench(
   "nanoid",
-  { group: "generation" },
+  { group: "UUID Generate" },
   () => {
     const _encoded = nanoid();
   },

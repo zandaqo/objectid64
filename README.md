@@ -31,15 +31,20 @@ import { ObjectId64 } from "objectid64";
 In Deno:
 
 ```javascript
-import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.0.3/mod.ts";
+import { ObjectId64 } from "https://raw.githubusercontent.com/zandaqo/objectid64/3.1.0/mod.ts";
 ```
 
 ```javascript
 const encoder = new ObjectId64();
 
-const objectId = new ObjectId().toHexString();
+const objectId = new ObjectId();
+const hex = objectId.toHexString();
 //=> '581653766c5dbc10f0aceb55'
-let encoded = encoder.fromObjectId(objectId);
+// encode binary directly
+let encoded = encoder.fromBinObjectId(objectId.id);
+//=> 'WBZTdmxdvBDwrOtV'
+// or encode hex string with same result
+encoded = encoder.fromObjectId(hex);
 //=> 'WBZTdmxdvBDwrOtV'
 let decoded = encoder.toObjectId(encoded);
 //=> '581653766c5dbc10f0aceb55'
