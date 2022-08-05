@@ -77,24 +77,15 @@ export class ObjectId64 {
    */
   fromBinObjectId(id: Uint8Array): string {
     const { base } = this;
-    return (
-      base[id[0] >> 2] +
-      base[((id[0] & 0x03) << 4) | (id[1] >> 4)] +
-      base[((id[1] & 0x0f) << 2) | (id[2] >> 6)] +
-      base[id[2] & 0x3f] +
-      base[id[3] >> 2] +
-      base[((id[3] & 0x03) << 4) | (id[4] >> 4)] +
-      base[((id[4] & 0x0f) << 2) | (id[5] >> 6)] +
-      base[id[5] & 0x3f] +
-      base[id[6] >> 2] +
-      base[((id[6] & 0x03) << 4) | (id[7] >> 4)] +
-      base[((id[7] & 0x0f) << 2) | (id[8] >> 6)] +
-      base[id[8] & 0x3f] +
-      base[id[9] >> 2] +
-      base[((id[9] & 0x03) << 4) | (id[10] >> 4)] +
-      base[((id[10] & 0x0f) << 2) | (id[11] >> 6)] +
-      base[id[11] & 0x3f]
-    );
+    let encoded = "";
+    let i = -1;
+    while (++i < 12) {
+      encoded = encoded + base[id[i] >> 2] +
+        base[((id[i] & 0x03) << 4) | (id[++i] >> 4)] +
+        base[((id[i] & 0x0f) << 2) | (id[++i] >> 6)] +
+        base[id[i] & 0x3f];
+    }
+    return encoded;
   }
 
   /**
@@ -126,23 +117,14 @@ export class ObjectId64 {
   toBinObjectId(id: string, binary = new Uint8Array(12)): Uint8Array {
     const { base } = this;
     let code = 0;
-    binary[0] = (base.indexOf(id[0]) << 2) |
-      (code = base.indexOf(id[1]), code >> 4);
-    binary[1] = (code << 4) | (code = base.indexOf(id[2]), code >> 2);
-    binary[2] = (code << 6) | base.indexOf(id[3]);
-    binary[3] = (base.indexOf(id[4]) << 2) |
-      (code = base.indexOf(id[5]), code >> 4);
-    binary[4] = (code << 4) | (code = base.indexOf(id[6]), code >> 2);
-    binary[5] = (code << 6) | base.indexOf(id[7]);
-    binary[6] = (base.indexOf(id[8]) << 2) |
-      (code = base.indexOf(id[9]), code >> 4);
-    binary[7] = (code << 4) | (code = base.indexOf(id[10]), code >> 2);
-    binary[8] = (code << 6) | base.indexOf(id[11]);
-    binary[9] = (base.indexOf(id[12]) << 2) |
-      (code = base.indexOf(id[13]), code >> 4);
-    binary[10] = (code << 4) |
-      (code = base.indexOf(id[14]), code >> 2);
-    binary[11] = (code << 6) | base.indexOf(id[15]);
+    let i = -1;
+    let j = -1;
+    while (++i < 12) {
+      binary[i] = (base.indexOf(id[++j]) << 2) |
+        (code = base.indexOf(id[++j]), code >> 4);
+      binary[++i] = (code << 4) | (code = base.indexOf(id[++j]), code >> 2);
+      binary[++i] = (code << 6) | base.indexOf(id[++j]);
+    }
     return binary;
   }
 
@@ -177,15 +159,16 @@ export class ObjectId64 {
    */
   fromBinUUID(id: Uint8Array): string {
     const { base } = this;
-    return (
-      this.fromBinObjectId(id) +
-      base[id[12] >> 2] +
-      base[((id[12] & 0x03) << 4) | (id[13] >> 4)] +
-      base[((id[13] & 0x0f) << 2) | (id[14] >> 6)] +
-      base[id[14] & 0x3f] +
-      base[id[15] >> 6] +
-      base[id[15] & 0x3f]
-    );
+    let encoded = "";
+    let i = -1;
+    while (++i < 15) {
+      encoded = encoded + base[id[i] >> 2] +
+        base[((id[i] & 0x03) << 4) | (id[++i] >> 4)] +
+        base[((id[i] & 0x0f) << 2) | (id[++i] >> 6)] +
+        base[id[i] & 0x3f];
+    }
+    return encoded + base[id[15] >> 6] +
+      base[id[15] & 0x3f];
   }
 
   /**
@@ -225,12 +208,14 @@ export class ObjectId64 {
   toBinUUID(id: string, binary = new Uint8Array(16)): Uint8Array {
     const { base } = this;
     let code = 0;
-    this.toBinObjectId(id, binary);
-    binary[12] = (base.indexOf(id[16]) << 2) |
-      (code = base.indexOf(id[17]), code >> 4);
-    binary[13] = (code << 4) |
-      (code = base.indexOf(id[18]), code >> 2);
-    binary[14] = (code << 6) | base.indexOf(id[19]);
+    let i = -1;
+    let j = -1;
+    while (++i < 15) {
+      binary[i] = (base.indexOf(id[++j]) << 2) |
+        (code = base.indexOf(id[++j]), code >> 4);
+      binary[++i] = (code << 4) | (code = base.indexOf(id[++j]), code >> 2);
+      binary[++i] = (code << 6) | base.indexOf(id[++j]);
+    }
     binary[15] = base.indexOf(id[20]) << 6 | base.indexOf(id[21]);
     return binary;
   }
