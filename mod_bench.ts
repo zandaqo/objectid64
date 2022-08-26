@@ -1,6 +1,5 @@
 import mongoid from "https://jspm.dev/base64-mongo-id";
 import { default as base64 } from "https://jspm.dev/uuid-base64";
-import { assertEquals } from "https://deno.land/std@0.136.0/testing/asserts.ts";
 import { ObjectId64 } from "./mod.ts";
 import { ObjectId } from "https://cdn.skypack.dev/bson?dts";
 import id128 from "https://cdn.skypack.dev/id128?dts";
@@ -26,23 +25,19 @@ bench(
   { group: "ObjectId Hex to Base64", baseline: true },
   () => {
     const id = objectIds[getIndex(objectIds.length)][1];
-    const encoded = encoder.fromObjectId(id);
-    assertEquals(id, encoder.toObjectId(encoded));
+    const _encoded = encoder.fromObjectId(id);
   },
 );
 
 bench("BigInt", { group: "ObjectId Hex to Base64" }, () => {
   const id = objectIds[getIndex(objectIds.length)][1];
-  const encoded = encoder.fromBigInt(BigInt(`0x${id}`));
-  assertEquals(id, encoder.toBigInt(encoded).toString(16));
+  const _encoded = encoder.fromBigInt(BigInt(`0x${id}`));
 });
 
 bench("base64-mongo-id", { group: "ObjectId Hex to Base64" }, () => {
   const id = objectIds[getIndex(objectIds.length)][1];
   //@ts-ignore deno-lint
-  const encoded = mongoid.toBase64(id);
-  //@ts-ignore deno-lint
-  assertEquals(id, mongoid.toHex(encoded));
+  const _encoded = mongoid.toBase64(id);
 });
 
 bench(
@@ -50,8 +45,7 @@ bench(
   { group: "UUID Hex to Base64", baseline: true },
   () => {
     const id = uuidsHex[getIndex(uuidsHex.length)];
-    const encoded = encoder.fromUUID(id);
-    assertEquals(id, encoder.toUUID(encoded));
+    const _encoded = encoder.fromUUID(id);
   },
 );
 bench(
@@ -60,9 +54,7 @@ bench(
   () => {
     const id = uuidsHex[getIndex(uuidsHex.length)];
     //@ts-ignore deno-lint
-    const encoded = base64.encode(id);
-    //@ts-ignore deno-lint
-    assertEquals(id, base64.decode(encoded));
+    const _encoded = base64.encode(id);
   },
 );
 

@@ -63,7 +63,7 @@ generating lookup tables for hex conversions:
 const defaultEncoder = new ObjectId64(null, true);
 ```
 
-### Obfurscating Sequential Ids
+### Obfuscating Sequential Ids
 
 By using different alphabets, we can encode numerical ids into different Base64
 strings:
@@ -148,39 +148,39 @@ decoded = encoder.toUUID(encoded);
 
 ```
 > deno bench --unstable
-benchmark            time (avg)             (min … max)       p75       p99      p995        
-------------------------------------------------------- -----------------------------        
-[ObjectId Hex to Base64] ObjectId64    4.28 µs/iter      (3.7 µs … 1.06 ms)      4 µs    9.6 µs   19.7 µs
-BigInt                                12.67 µs/iter    (11.2 µs … 792.5 µs)   11.8 µs   29.4 µs   31.8 µs
-base64-mongo-id                        6.75 µs/iter      (5.9 µs … 2.19 ms)    6.3 µs   21.8 µs     23 µs
+benchmark                                time (avg)             (min … max)       p75       p99      p995
+--------------------------------------------------------------------------- -----------------------------
+[ObjectId Hex to Base64] ObjectId64    1.27 µs/iter     (1.22 µs … 1.66 µs)   1.29 µs   1.66 µs   1.66 µs
+BigInt                                 7.37 µs/iter     (6.4 µs … 342.4 µs)    6.7 µs   21.4 µs     24 µs
+base64-mongo-id                        2.86 µs/iter     (2.76 µs … 4.37 µs)   2.83 µs   4.37 µs   4.37 µs
 
 summary
   [ObjectId Hex to Base64] ObjectId64
-   1.58x faster than base64-mongo-id
-   2.96x faster than BigInt
+   2.24x faster than base64-mongo-id
+   5.78x faster than BigInt
 
-[UUID Hex to Base64] ObjectId64        8.28 µs/iter      (4.9 µs … 3.31 ms)    7.7 µs   25.1 µs   28.1 µs
-uuid-base64                            11.8 µs/iter        (9 µs … 3.68 ms)   10.9 µs   28.6 µs   32.1 µs
+[UUID Hex to Base64] ObjectId64        2.58 µs/iter     (2.41 µs … 3.03 µs)   2.64 µs   3.03 µs   3.03 µs
+uuid-base64                            8.93 µs/iter      (6.8 µs … 2.15 ms)    8.5 µs   25.4 µs     27 µs
 
 summary
   [UUID Hex to Base64] ObjectId64
-   1.43x faster than uuid-base64
+   3.46x faster than uuid-base64
 
-[UUID Binary] ObjectId64               3.72 µs/iter      (2.5 µs … 3.59 ms)    3.4 µs    9.4 µs   17.1 µs
-id128 ULID                              5.5 µs/iter     (3.3 µs … 19.82 ms)    4.6 µs   20.3 µs   26.2 µs
-id128 UUID                            44.13 µs/iter        (5 µs … 3.08 ms)   57.4 µs  108.3 µs  139.7 µs
+[UUID Binary] ObjectId64                3.1 µs/iter      (2.2 µs … 1.85 ms)    2.8 µs   11.3 µs   13.3 µs
+id128 ULID                             4.58 µs/iter     (3.4 µs … 18.06 ms)    4.1 µs   14.1 µs   21.1 µs
+id128 UUID                            48.93 µs/iter     (5.3 µs … 608.5 µs)   62.6 µs    125 µs    149 µs
 
 summary
   [UUID Binary] ObjectId64
    1.48x faster than id128 ULID
-   11.86x faster than id128 UUID
+   15.78x faster than id128 UUID
 
-[ObjectId Binary] ObjectId64           2.64 µs/iter      (2.1 µs … 3.84 ms)    2.3 µs    7.6 µs     11 µs
-BSON                                   4.65 µs/iter      (3.8 µs … 5.41 ms)    4.2 µs   13.6 µs   19.3 µs
+[ObjectId Binary] ObjectId64           1.56 µs/iter     (1.46 µs … 2.69 µs)    1.5 µs   2.69 µs   2.69 µs
+BSON                                   4.62 µs/iter      (3.9 µs … 1.57 ms)    4.2 µs   13.1 µs   20.7 µs
 
 summary
   [ObjectId Binary] ObjectId64
-   1.77x faster than BSON
+   2.95x faster than BSON
 ```
 
 ## License
