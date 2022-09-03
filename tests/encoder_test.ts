@@ -1,8 +1,8 @@
-import { assertEquals } from "https://deno.land/std@0.136.0/testing/asserts.ts";
-import { ObjectId64 } from "./mod.ts";
+import { assertEquals } from "./test_deps.ts";
+import { Encoder } from "../encoder.ts";
 
 const { test } = Deno;
-const defaultEncoder = new ObjectId64();
+const defaultEncoder = new Encoder();
 
 const objectIds: Array<[string, string, bigint, Uint8Array]> = [
   [
@@ -185,94 +185,94 @@ const ints: Array<[number, string]> = [
   [257, "EB"],
 ];
 
-test("[ObjectID64.constructor] creates encoder with the default base", () => {
+test("[Encoder.constructor] creates encoder with the default base", () => {
   assertEquals(defaultEncoder.hexToBase !== undefined, true);
   assertEquals(defaultEncoder.baseToHex !== undefined, true);
   assertEquals(defaultEncoder.hexToBase.get("000"), "AA");
 });
 
-test("[ObjectID64.constructor] creates an encoder with a custom base", () => {
-  const encoder = new ObjectId64(
+test("[Encoder.constructor] creates an encoder with a custom base", () => {
+  const encoder = new Encoder(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_",
   );
   assertEquals(encoder.hexToBase.get("000"), "aa");
 });
 
-test("[ObjectID64.constructor] creates an encoder without lookup tables", () => {
-  const encoder = new ObjectId64(
+test("[Encoder.constructor] creates an encoder without lookup tables", () => {
+  const encoder = new Encoder(
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_",
     true,
   );
   assertEquals(encoder.hexToBase.size, 0);
 });
 
-test("[ObjectID64#fromObjectId] encodes an ObjectId hex string into base64", () => {
+test("[Encoder#fromObjectId] encodes an ObjectId hex string into base64", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.fromObjectId(id[0]), id[1]);
   }
 });
 
-test("[ObjectID64#fromBinObjectId] encodes an ObjectId into base64", () => {
+test("[Encoder#fromBinObjectId] encodes an ObjectId into base64", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.fromBinObjectId(id[3]), id[1]);
   }
 });
 
-test("[ObjectID64#toObjectId] decodes a base64 string into an ObjectId hex string", () => {
+test("[Encoder#toObjectId] decodes a base64 string into an ObjectId hex string", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.toObjectId(id[1]), id[0]);
   }
 });
 
-test("[ObjectID64#toBinObjectId] decodes a base64 string into an ObjectId", () => {
+test("[Encoder#toBinObjectId] decodes a base64 string into an ObjectId", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.toBinObjectId(id[1]), id[3]);
   }
 });
 
-test("[ObjectID64#fromUUID] encodes a UUID string into base64", () => {
+test("[Encoder#fromUUID] encodes a UUID string into base64", () => {
   for (const id of uuids) {
     assertEquals(defaultEncoder.fromUUID(id[0]), id[1]);
   }
 });
 
-test("[ObjectID64#fromBinUUID] encodes a UUID into base64", () => {
+test("[Encoder#fromBinUUID] encodes a UUID into base64", () => {
   for (const id of uuids) {
     assertEquals(defaultEncoder.fromBinUUID(id[2]), id[1]);
   }
 });
 
-test("[ObjectID64#toUUID] decodes a base64 string into a UUID string", () => {
+test("[Encoder#toUUID] decodes a base64 string into a UUID string", () => {
   for (const id of uuids) {
     assertEquals(defaultEncoder.toUUID(id[1]), id[0]);
   }
 });
 
-test("[ObjectID64#toBinUUID] decodes a base64 string into a UUID", () => {
+test("[Encoder#toBinUUID] decodes a base64 string into a UUID", () => {
   for (const id of uuids) {
     assertEquals(defaultEncoder.toBinUUID(id[1]), id[2]);
   }
 });
 
-test("[ObjectID64#fromBigInt] encodes a bigint into base64", () => {
+test("[Encoder#fromBigInt] encodes a bigint into base64", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.fromBigInt(id[2]), id[1]);
   }
 });
 
-test("[ObjectID64#toBigInt] decodes a base64 string into a bigint", () => {
+test("[Encoder#toBigInt] decodes a base64 string into a bigint", () => {
   for (const id of objectIds) {
     assertEquals(defaultEncoder.toBigInt(id[1]), id[2]);
   }
 });
 
-test("[ObjectID64#fromInt] encodes an integer into base64", () => {
+test("[Encoder#fromInt] encodes an integer into base64", () => {
   for (const id of ints) {
     assertEquals(defaultEncoder.fromInt(id[0]), id[1]);
   }
 });
 
-test("[ObjectID64#toInt] decodes a base64 string into an integer", () => {
+test("[Encoder#toInt] decodes a base64 string into an integer", () => {
   for (const id of ints) {
     assertEquals(defaultEncoder.toInt(id[1]), id[0]);
   }

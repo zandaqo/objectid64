@@ -1,14 +1,17 @@
 import mongoid from "https://jspm.dev/base64-mongo-id";
 import { default as base64 } from "https://jspm.dev/uuid-base64";
-import { ObjectId64 } from "./mod.ts";
 import { ObjectId } from "https://cdn.skypack.dev/bson?dts";
 import id128 from "https://cdn.skypack.dev/id128?dts";
+import { Encoder, Encrypter } from "../mod.ts";
 
 function getIndex(max: number): number {
   return Math.floor(Math.random() * max);
 }
 const { bench } = Deno;
-const encoder = new ObjectId64();
+const encoder = new Encoder();
+
+const key = await Encrypter.generateKey();
+const encrypter = new Encrypter(key);
 
 const objectIds: Array<[ObjectId, string]> = new Array(100).fill(1).map(() => {
   const id = new ObjectId();
@@ -105,5 +108,45 @@ bench(
     const id = objectIds[getIndex(100)][0];
     const encoded = id.toHexString();
     const _decoded = ObjectId.createFromHexString(encoded);
+  },
+);
+
+bench(
+  "[UUID Encode/Encrypt] Encode UUID",
+  { group: "UUID Encode/Encrypt", baseline: true },
+  () => {
+    const id = uuids[getIndex(100)];
+    const encoded = encoder.fromBinUUID(id);
+    const _decoded = encoder.toBinUUID(encoded);
+  },
+);
+
+bench(
+  "Encrypt UUID",
+  { group: "UUID Encode/Encrypt" },
+  async () => {
+    const id = uuids[getIndex(100)];
+    const encrypted = await encrypter.fromUUID(id);
+    const _decoded = await encrypter.toUUID(encrypted);
+  },
+);
+
+bench(
+  "[Int Encode/Encrypt] Encode Int",
+  { group: "Int Encode/Encrypt", baseline: true },
+  () => {
+    const id = getIndex(1000000);
+    const encoded = encoder.fromInt(id);
+    const _decoded = encoder.toInt(encoded);
+  },
+);
+
+bench(
+  "Encrypt Int",
+  { group: "Int Encode/Encrypt" },
+  async () => {
+    const id = getIndex(1000000);
+    const encrypted = await encrypter.fromInt(id);
+    const _decoded = await encrypter.toInt(encrypted);
   },
 );

@@ -1,7 +1,7 @@
 import {
   build,
   emptyDir,
-} from "https://raw.githubusercontent.com/denoland/dnt/0.28.0/mod.ts";
+} from "https://raw.githubusercontent.com/denoland/dnt/0.30.0/mod.ts";
 
 await emptyDir("npm");
 
@@ -13,13 +13,18 @@ await build({
   declaration: true,
   scriptModule: false,
   compilerOptions: {
-    target: "ES2021",
+    target: "Latest",
     sourceMap: true,
     inlineSources: true,
+    lib: [
+      "esnext",
+      "dom",
+    ],
   },
   shims: {
     deno: false,
     timers: false,
+    crypto: false,
   },
   package: {
     name: "objectid64",
@@ -34,7 +39,8 @@ await build({
       "base64",
       "uri",
       "url",
-      "short",
+      "encode",
+      "encrypt",
       "shorten",
       "mongodb",
     ],
