@@ -3,11 +3,20 @@
  * to and from 128-bit id values akin to UUID.
  */
 export class Encrypter {
-  static params: AesCtrParams = {
-    name: "AES-CTR",
-    counter: globalThis.crypto.getRandomValues(new Uint8Array(16)),
-    length: 128,
-  };
+  static #params: AesCtrParams;
+
+  static get params() {
+    /* TODO: replace with simple static variable
+    once node supports globalThis.crypto without a flag */
+    if (!this.#params) {
+      this.#params = {
+        name: "AES-CTR",
+        counter: globalThis.crypto.getRandomValues(new Uint8Array(16)),
+        length: 128,
+      };
+    }
+    return this.#params;
+  }
 
   #key: CryptoKey;
 
